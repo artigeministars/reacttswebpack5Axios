@@ -7,6 +7,11 @@ export interface IAxiosPostsConfig extends IAxiosConfig {
     timeout?: number;
 }
 
+export type ServerError = {
+    code: string;
+    description: string;
+};
+
 const cancelToken = axios.CancelToken;
 export let cancelTokenSource: CancelTokenSource = cancelToken.source();
 export const setCancelTokenSource = (CTS: CancelTokenSource): void => {

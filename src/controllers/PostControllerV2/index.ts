@@ -1,4 +1,6 @@
+import {ServerError} from "@config/axios/General";
 import PostApiClass from "@services/PostService";
+import {AxiosError} from "axios";
 
 class PostControllerClass extends PostApiClass {
     public constructor(baseURL: string) {
@@ -21,6 +23,12 @@ export const getPostsStatic = async () => {
         return response.data;
     } catch (error) {
         console.log(error);
+        /*
+        if (error && error.response) {
+            const axiosError = error as AxiosError<ServerError>;
+            return axiosError.response.data;
+        }
+        */
         return error;
     }
 };

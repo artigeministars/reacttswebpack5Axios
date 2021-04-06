@@ -59,3 +59,5 @@ npm i --save-dev @types/webpack-bundle-analyzer`
 # npm install --save-dev tsconfig-paths-webpack-plugin
 
 # npm install --save axios-progress-bar
+
+npm install --save-dev redux-devtools-extension
