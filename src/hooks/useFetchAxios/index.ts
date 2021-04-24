@@ -1,7 +1,7 @@
 import IPost from "@domain/models/Post";
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 import {useEffect, useState} from "react";
-import "axios-progress-bar/dist/nprogress.css";
+// import "axios-progress-bar/dist/nprogress.css";
 //  useFetch hook below.
 //  const { response, loading } = useFetch(doSearch, "test.json");
 

@@ -69,7 +69,9 @@ const config: webpack.Configuration = {
       "@config":path.resolve("./src/config/"),
       "@constants":path.resolve("./src/constants/"),
       "@domain":path.resolve("./src/domain/"),
-      "@routes":path.resolve("./src/routes/")
+      "@routes":path.resolve("./src/routes/"),
+      "@features":path.resolve("./src/features/"),
+      "@storages":path.resolve("./src/store/")
     },
     extensions: [".tsx", ".ts", ".js"],
   },

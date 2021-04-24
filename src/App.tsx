@@ -2,11 +2,12 @@ import React from "react";
 import logo from "./logo.svg";
 // import jpegg from "./ge.jpeg";
 // import pngg from "./gth.png";
-import PostComponentC1 from "@components/PostComponentV1";
-import PostComponentC2 from "@components/PostComponentV2";
-import PostComponentC3 from "@components/PostComponentV3";
-import PostComponentC4 from "@components/PostComponentV4";
-import PostComponentC5 from "@components/PostComponentV5";
+// import PostComponentC1 from "@components/PostComponentV1";
+// import PostComponentC2 from "@components/PostComponentV2";
+// import PostComponentC3 from "@components/PostComponentV3";
+// import PostComponentC4 from "@components/PostComponentV4";
+import PostComponentV7 from "@components/PostComponentV7";
+// import PostComponentC5 from "@components/PostComponentV5";
 
 import "./App.css";
 import "./App.scss";
@@ -29,7 +30,7 @@ function App() {
                     Learn React
                 </a>
             </header>
-            <PostComponentC5></PostComponentC5>
+            <PostComponentV7></PostComponentV7>
         </div>
     );
 }

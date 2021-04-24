@@ -10,7 +10,9 @@
         "@config/*":["src/config/*"],
         "@constants/*":["src/constants/*"],
         "@domain/*":["src/domain/*"],
-        "@routes":["src/routes/*"]
+        "@routes/*":["src/routes/*"],
+        "@features/*":["src/features/*"],
+        "@storages/*":["src/store/*"],
       },
       "lib": ["dom", "dom.iterable", "esnext"],
       "outDir": "./build/",
