@@ -65,3 +65,11 @@ npm install --save-dev redux-devtools-extension
 npm install --save-dev redux-thunk @types/redux-thunk
 
 npm install --save-dev reselect
+
+npm uninstall redux redux-thunk reselect
+
+npm install @reduxjs/toolkit
+
+npm install --save redux-logger @types/redux-logger
+// for module.hot HMR 
+npm install @types/webpack-env 

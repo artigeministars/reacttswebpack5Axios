@@ -1,98 +1,66 @@
-import {Statuses} from "@constants/StoreConstants";
 import IComment from "@domain/models/Comment";
-import ICommentActionTypes, {
-    iCommentActionTypes,
-    commentActionTypes,
-    createGetCommentRequest,
-    createAddCommentRequest,
-    createUpdateCommentRequest,
-    createDeleteCommentRequest,
-    createErrorCommentRequest,
-    createLoadingCommentRequest
-} from "./actionTypes";
+import {
+    createAsyncThunk,
+    createEntityAdapter,
+    createReducer,
+    createSelector,
+    createSlice,
+    PayloadAction
+} from "@reduxjs/toolkit";
+import {getCommentsAsync} from "@services/CommentServiceC";
+import {RootState} from "@storages/index";
 
-export type CommentState = {
-    comments: {[key: number]: IComment};
-    completed: string;
-    error?: string | null;
-};
+type Comment = IComment;
 
-export const initialCommentState: CommentState = {
-    comments: {},
-    completed: Statuses.idle,
-    error: null
-};
+export const commentAdapter = createEntityAdapter<Comment>({
+    selectId: (comment) => comment.id,
+    sortComparer: (a, b) => a.name.localeCompare(b.name)
+});
 
-export const commentsSliceReducer = (
-    state = initialCommentState,
-    action: /* commentActionTypes */
-    | createLoadingCommentRequest
-        | createErrorCommentRequest
-        | createGetCommentRequest
-        | createAddCommentRequest
-        | createUpdateCommentRequest
-        | createDeleteCommentRequest
-): CommentState => {
-    switch (action.type) {
-        case iCommentActionTypes.loadingComment: {
-            return {
-                ...state,
-                completed: Statuses.loading
-            };
+export const initialComment = commentAdapter.getInitialState({
+    status: "idle",
+    error: ""
+});
+
+export const fetchCommentAsyncThunk = createAsyncThunk(
+    "@@Comment/getComments",
+    async (postId: number) => {
+        try {
+            return (await getCommentsAsync(postId)).data;
+        } catch (error) {
+            return error;
         }
-        case iCommentActionTypes.commentError: {
-            return {
-                ...state,
-                error: action.payload.error
-            };
-        }
-        case iCommentActionTypes.getComments: {
-            const newComments: {[key: string]: NonNullable<IComment>} = {};
-            action.payload.comments.forEach((comment) => (newComments[comment.id] = comment));
-            return {
-                ...state,
-                comments: {
-                    ...state.comments,
-                    ...newComments
-                },
-                completed: Statuses.idle
-            };
-        }
-        case iCommentActionTypes.addComment: {
-            const comment: IComment = action.payload.comment;
-            return {
-                ...state,
-                comments: {
-                    ...state.comments,
-                    [comment.id]: comment
-                },
-                completed: Statuses.idle
-            };
-        }
-        case iCommentActionTypes.updateComment: {
-            const comment: IComment = action.payload.comment;
-            return {
-                ...state,
-                comments: {
-                    ...state.comments,
-                    [comment.id]: comment
-                },
-                completed: Statuses.idle
-            };
-        }
-        case iCommentActionTypes.deleteComment: {
-            const todoId = action.payload.id;
-            const newComments = {...state.comments};
-            return {
-                ...state,
-                comments: {
-                    ...state.comments,
-                    ...newComments
-                },
-                completed: Statuses.idle
-            };
-        }
-        default:
-            return state;
     }
-};
+);
+
+export const {
+    selectAll: selectAllComments,
+    selectById: selectCommentById
+} = commentAdapter.getSelectors<RootState>((state) => state.comments);
+
+export const selectAllCommentsIds = createSelector(selectAllComments, (comments) =>
+    comments.map((comment) => comment.id)
+);
+
+const commentSliceReducer = createSlice({
+    name: "comments",
+    initialState: initialComment,
+    reducers: {
+        postDeleteAction: commentAdapter.removeOne
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchCommentAsyncThunk.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchCommentAsyncThunk.fulfilled, (state, action) => {
+                commentAdapter.setAll(state, action.payload);
+                state.status = "idle";
+            })
+            .addCase(fetchCommentAsyncThunk.rejected, (state, action) => {
+                state.error = action.payload as string;
+            });
+    }
+});
+
+export default commentSliceReducer.reducer;

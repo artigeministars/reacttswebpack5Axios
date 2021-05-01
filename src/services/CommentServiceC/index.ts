@@ -24,7 +24,7 @@ export const getComments = (postId: number) =>
     );
 
 export const getCommentsAsync = async (postId: number) =>
-    await baseAxios.get<IComment>(
+    await baseAxios.get<IComment[]>(
         `/posts/${postId}/comments`,
         generalAxiosConfig as AxiosRequestConfig
     );

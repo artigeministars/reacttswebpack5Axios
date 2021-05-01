@@ -1,3 +1,41 @@
+import postSliceReducer, {postCaseReducer} from "@features/Posts/postSliceReducer";
+import commentSliceReducer from "@features/comments/commentsSliceReducer";
+import {configureStore, EntityState, getDefaultMiddleware} from "@reduxjs/toolkit";
+import {LoggerMiddleware} from "./middlewares";
+import logger from "redux-logger";
+import IPost from "@domain/models/Post";
+
+export const store = configureStore({
+    reducer: {
+        posts: postSliceReducer,
+        comments: commentSliceReducer
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+    devTools: process.env.NODE_ENV !== "development" ? false : true
+});
+export type AppDispatch = typeof store.dispatch;
+/*
+export type RootState = {
+    posts: {
+        ids: [];
+        eintities: {EntityState<IPost>};
+        status: string;
+        error: string;
+    };
+};
+*/
+export type RootState = ReturnType<typeof store.getState>;
+
+if (process.env.NODE_ENV === "development" && module.hot) {
+    module.hot.accept("../features/", () => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const newRootReducer = require("../features/Posts/postSliceReducer").default;
+        store.replaceReducer(newRootReducer);
+    });
+}
+
+// {posts: EntityState<IPost> & { status: string; error: string; }; }
+/*
 import {postSliceReducer, PostState} from "@features/Posts/postSliceReducer";
 import {LoggerMiddleware} from "@storages/middlewares";
 import {

@@ -1,127 +1,123 @@
 import IPost from "@domain/models/Post";
-import {Statuses} from "@constants/StoreConstants";
 import {
-    iPostActionTypes,
-    postActionTypes,
-    createGetPostRequest,
-    createAddPostRequest,
-    createUpdatePostRequest,
-    createDeletePostRequest,
-    createErrorPostRequest,
-    createAllPostRequest
-} from "./actionTypes";
-import {AnyAction} from "redux";
+    createSlice,
+    createEntityAdapter,
+    createAsyncThunk,
+    createSelector,
+    PayloadAction,
+    createReducer
+} from "@reduxjs/toolkit";
+import {getPostsAsync} from "@services/PostServiceC";
+import {RootState} from "@storages/index";
+type Post = IPost;
 
-export type entityType = IPost;
+export const postAdapter = createEntityAdapter<Post>({
+    selectId: (post) => post.id,
+    sortComparer: (a, b) => a.title.localeCompare(b.title)
+});
+export const initialState = postAdapter.getInitialState({
+    status: "idle",
+    error: ""
+});
 
-export type PostState = {
-    //   posts: Record<string, string>;
-    posts: {[key: number]: IPost};
-    completed: string;
-    error?: string | null;
-};
+/**** async Thunks */
 
-export const initialPostState: PostState = {
-    posts: {
-        [1]: {
-            userId: 1,
-            id: 1,
-            title: "bla bla blaaa",
-            body: "body"
-        }
-    },
-    completed: Statuses.idle,
-    error: null
-};
-
-export const postSliceReducer = (
-    state = initialPostState,
-    action: /* createAllPostRequest */
-    | createGetPostRequest
-        | createAddPostRequest
-        | createUpdatePostRequest
-        | createDeletePostRequest
-        | createErrorPostRequest
-): PostState => {
-    switch (action.type) {
-        case iPostActionTypes.getPosts: {
-            // const newPosts: {[key: number]: NonNullable<IPost>} = {};
-            // // const newPosts: Partially<Record<id in IPost, IPost>> = {};
-            // action.payload.posts.forEach((post) => (newPosts[post.id] = post));
-            /*
-               Object.values(newEntities).forEach((todo) => {
-               if (todo.completed) {
-               delete newEntities[todo.id]
-               }
-               })
-            */
-
-            return {
-                ...state,
-                posts: {
-                    ...state.posts,
-                    ...action.payload.posts
-                    // ...newPosts
-                },
-                completed: Statuses.idle
-            };
-        }
-        case iPostActionTypes.addPost: {
-            const post: IPost = action.payload.post;
-            return {
-                ...state,
-                posts: {
-                    ...state.posts,
-                    [post.id]: post
-                },
-                completed: Statuses.idle
-            };
-        }
-        case iPostActionTypes.updatePost: {
-            const post: IPost = action.payload.post;
-
-            return {
-                ...state,
-                posts: {
-                    ...state.posts,
-                    [post.id]: post
-                },
-                completed: Statuses.idle
-            };
-        }
-        case iPostActionTypes.deletePost: {
-            const todoId = action.payload.id;
-            const newPosts = {...state.posts};
-            /*
-               Object.values(newEntities).forEach((todo) => {
-               if (todo.completed) {
-               delete newEntities[todo.id]
-              }
-              })
-            */
-            delete newPosts[todoId];
-            return {
-                ...state,
-                posts: {
-                    ...state.posts,
-                    ...newPosts
-                },
-                completed: Statuses.idle
-            };
-        }
-        case iPostActionTypes.loadingPost: {
-            return {
-                ...state,
-                completed: Statuses.loading
-            };
-        }
-        case iPostActionTypes.postError: {
-            return {
-                ...state,
-                error: action.payload.error
-            };
-        }
-        default:
-            return state;
+export const fetchPostsThunkAction = createAsyncThunk("@@Post/getPosts", async () => {
+    /*
+    Promise.resolve(getPostsAsync())
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            return {error: error};
+        });
+*/
+    try {
+        return (await getPostsAsync()).data;
+    } catch (error) {
+        return <string>error;
     }
-};
+});
+
+/* selectors */
+export const {
+    selectAll: selectAllPosts,
+    selectById: selectPostById
+} = postAdapter.getSelectors<RootState>((state) => state.posts);
+
+export const selectAllPostsIds = createSelector(selectAllPosts, (posts) =>
+    posts.map((post) => post.id)
+);
+
+export const selectPostStatus = (state: RootState) => state.posts.status;
+
+export const postCaseReducer = createReducer(initialState, (builder) => {
+    builder
+        .addCase(fetchPostsThunkAction.pending, (state, action) => {
+            state.status = "loading";
+        })
+        .addCase(fetchPostsThunkAction.fulfilled, postAdapter.upsertMany)
+        .addCase(fetchPostsThunkAction.rejected, (state, action) => {
+            state.error = action.payload as string;
+        });
+});
+
+/*
+
+ .addCase(fetchPostsThunkAction.fulfilled, (state, action) => {
+            // state.entities = action.payload;
+            postAdapter.setAll(state, action.payload);
+            state.status = "idle";
+        })
+
+*/
+
+const postSliceReducer = createSlice({
+    name: "posts",
+    initialState: initialState,
+    reducers: {
+        addPostAction(state, action) {
+            const post = action.payload;
+            state.entities[post.id] = post;
+        },
+        postDeleteAction: postAdapter.removeOne
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchPostsThunkAction.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(fetchPostsThunkAction.fulfilled, postAdapter.upsertMany)
+            .addCase(fetchPostsThunkAction.rejected, (state, action) => {
+                state.error = action.payload as string;
+            });
+    }
+    /*
+        setPostColorAction: {
+            reducer(state, action) {
+                const {color, postId} = action.payload;
+                state.entities[postId].color = color;
+            },
+            prepare(postId, color) {
+               return {payload: {color, postId}};
+            }
+        },
+        extraReducers: {
+            [fetchPostsThunkAction.pending]: (state, action) => {
+                state.status = "loading";
+            },
+            [fetchPostsThunkAction.fulfilled]: (state, action) => {
+                postAdapter.setAll(state, action.payload);
+                state.status = "idle";
+            },
+          
+            [fetchPostsThunkAction.rejected]: (state, action) => {
+                state.error = action.payload;
+            }
+        }
+        */
+});
+
+export const {addPostAction, postDeleteAction} = postSliceReducer.actions;
+
+export default postSliceReducer.reducer;
