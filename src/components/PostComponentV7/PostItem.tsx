@@ -12,7 +12,7 @@ import {useAppSelector} from "@hooks/useAppSelector";
 import {fetchCommentAsyncThunk, selectAllComments} from "@features/comments/commentsSliceReducer";
 import IComment from "@domain/models/Comment";
 import CommentItem from "./CommentItem";
-import "./postComponent.css";
+import "./postComponent.scss";
 
 export type Props = {id: number};
 // scss and crud transactions

@@ -2,7 +2,7 @@ import {selectCommentById} from "@features/comments/commentsSliceReducer";
 import {useAppSelector} from "@hooks/useAppSelector";
 import {RootState} from "@storages/index";
 import React from "react";
-import "./postComponent.css";
+import "./postComponent.scss";
 
 type props = {id: number};
 

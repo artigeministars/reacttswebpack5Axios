@@ -49,9 +49,9 @@ const config: webpack.Configuration = {
             'style-loader',
             // remove modules: true
            // {loader: 'css-loader', options: {sourceMap: true, importLoaders: 2, modules: true }},
-           {loader: 'css-loader', options: {sourceMap: true, importLoaders: 2, modules: true }},
+           {loader: 'css-loader', options: {sourceMap: true, importLoaders: 2}},
            {loader: 'postcss-loader', options: {sourceMap: true}},
-            {loader: 'sass-loader', options: {sourceMap: true}},
+           {loader: 'sass-loader', options: {sourceMap: true}},
         ],
       
       },
