@@ -54,7 +54,7 @@ const commentSliceReducer = createSlice({
                 state.status = "loading";
             })
             .addCase(fetchCommentAsyncThunk.fulfilled, (state, action) => {
-                commentAdapter.setAll(state, action.payload);
+                commentAdapter.upsertMany(state, action.payload);
                 state.status = "idle";
             })
             .addCase(fetchCommentAsyncThunk.rejected, (state, action) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import axios, {CancelTokenSource} from "axios";
 import IPost from "@domain/models/Post";
-import "./postComponent.scss";
+import "./postComponent.css";
 
 const defaultPosts: IPost[] = [];
 

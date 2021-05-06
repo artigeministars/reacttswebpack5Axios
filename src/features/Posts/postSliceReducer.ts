@@ -49,14 +49,19 @@ export const selectAllPostsIds = createSelector(selectAllPosts, (posts) =>
     posts.map((post) => post.id)
 );
 
-export const selectPostStatus = (state: RootState) => state.posts.status;
-
+export const selectPostStatus = (state: RootState) => state.posts;
+export const statuOfPosts = createSelector(selectPostStatus, (posts) => posts.status);
 export const postCaseReducer = createReducer(initialState, (builder) => {
     builder
         .addCase(fetchPostsThunkAction.pending, (state, action) => {
             state.status = "loading";
         })
-        .addCase(fetchPostsThunkAction.fulfilled, postAdapter.upsertMany)
+        // it is working properly , but we want to set status as wwell
+        //  .addCase(fetchPostsThunkAction.fulfilled, postAdapter.upsertMany)
+        .addCase(fetchPostsThunkAction.fulfilled, (state, action) => {
+            postAdapter.setAll(state, action.payload);
+            state.status = "idle";
+        })
         .addCase(fetchPostsThunkAction.rejected, (state, action) => {
             state.error = action.payload as string;
         });

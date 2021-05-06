@@ -43,13 +43,17 @@ const config: webpack.Configuration = {
         type: 'asset/inline',
       },
       {
-        test: /\.(scss|css)$/,
+        test: /\.(scss|css|module.scss|module.css)$/,
+        /* use: ['style-loader','css-loader','postcss-loader','sass-loader'] */
         use: [
             'style-loader',
-            {loader: 'css-loader', options: {sourceMap: true, importLoaders: 1, modules: true }},
-            {loader: 'postcss-loader', options: {sourceMap: true}},
+            // remove modules: true
+           // {loader: 'css-loader', options: {sourceMap: true, importLoaders: 2, modules: true }},
+           {loader: 'css-loader', options: {sourceMap: true, importLoaders: 2, modules: true }},
+           {loader: 'postcss-loader', options: {sourceMap: true}},
             {loader: 'sass-loader', options: {sourceMap: true}},
         ],
+      
       },
       {
         test: /\.(ts|tsx)$/,
@@ -81,7 +85,7 @@ const config: webpack.Configuration = {
       "@features":path.resolve("./src/features/"),
       "@storages":path.resolve("./src/store/")
     },
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js",".scss",".css"],
   },
   plugins: [
     new HtmlWebpackPlugin({

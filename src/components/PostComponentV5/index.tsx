@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {POST_CRUD} from "@constants/PostConstants";
 import {generalAxiosConfig} from "@config/axios/General";
 import {useFetch} from "@hooks/useFetchAxios";
-import "@components/PostComponentV1/postComponent.scss";
+import "@components/PostComponentV1/postComponent.css";
 import {AxiosRequestConfig} from "axios";
 
 const PostC5: React.FC = () => {

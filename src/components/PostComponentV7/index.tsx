@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import "@components/PostComponentV7/postComponent.module.scss";
 import {useAppSelector} from "@hooks/useAppSelector";
 import PostItem from "./PostItem";
 import {selectAllPosts} from "@features/Posts/postSliceReducer";
+import "./postComponent.css";
 
 const PostC7: React.FC = () => {
     const todoIds = useAppSelector(selectAllPosts);

@@ -34,9 +34,16 @@ const config: webpack.Configuration = {
         },
       },
       {
-        test: /\.(scss|css)$/,
+        test: /\.(scss|css|module.scss|module.css)$/,
         use: [
           MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              sourceMap: false
+            },
+          /* remove modules: true
           {
             loader: 'css-loader',
             options: {
@@ -44,6 +51,7 @@ const config: webpack.Configuration = {
               sourceMap: false,
               modules: true,
             },
+            */
           },
           'postcss-loader',
           'sass-loader',
@@ -73,7 +81,7 @@ const config: webpack.Configuration = {
       "@features":path.resolve("./src/features/"),
       "@storages":path.resolve("./src/store/")
     },
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js",".scss",".css"],
   },
   plugins: [
     new HtmlWebpackPlugin({

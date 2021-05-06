@@ -11,7 +11,7 @@ WORKDIR /opt/web
 # install app dependencies
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm install
+# RUN npm install
 
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH="/opt/web/node_modules/.bin:$PATH"
