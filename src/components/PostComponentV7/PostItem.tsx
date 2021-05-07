@@ -65,7 +65,7 @@ const PostItem: React.FC<Props> = ({id}) => {
                 <div className="post-list-sub-item">{Post.body}</div>
                 <div>statu: {status}</div>
 
-                {commentLists !== undefined && <ul>{commentLists}</ul>}
+                {commentLists !== undefined && <ul className="post-sub-list">{commentLists}</ul>}
             </li>
         );
     }

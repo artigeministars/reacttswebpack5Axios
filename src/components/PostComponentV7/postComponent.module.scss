@@ -1,18 +1,26 @@
 .post-list {
-display: flex;
+display: block;
 list-style-type: none;
   margin: 0;
   padding: 0;
 background-color: cadetblue;
 }
 
+.post-sub-list {
+  display: block;
+  list-style-type: none;
+    margin: 0;
+    padding: 0;
+  background-color: cadetblue;
+  }
+
 .post-list-sub-item {
-  display: flex;
+  display: block;
   background-color: cornflowerblue;
 
 }
 
 .post-list-item {
-display: inline-flex;
+display: inline-block;
 background-color: darkcyan;
 }
