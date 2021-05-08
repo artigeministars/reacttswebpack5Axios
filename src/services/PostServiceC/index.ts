@@ -13,7 +13,7 @@ export const getPosts = () =>
     baseAxios.get<IPost[]>("/posts", generalAxiosConfig as AxiosRequestConfig);
 
 export const getPostsAsync = async () =>
-    await baseAxios.get("/posts", generalAxiosConfig as AxiosRequestConfig);
+    await baseAxios.get("/posts?_start=0&_limit=10", generalAxiosConfig as AxiosRequestConfig);
 
 export const getPost = (id: string) =>
     baseAxios.get<string>(`/post/${id}`, generalAxiosConfig as AxiosRequestConfig);

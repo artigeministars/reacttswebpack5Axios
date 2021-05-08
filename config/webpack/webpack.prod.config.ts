@@ -79,7 +79,8 @@ const config: webpack.Configuration = {
       "@domain":path.resolve("./src/domain/"),
       "@routes":path.resolve("./src/routes/"),
       "@features":path.resolve("./src/features/"),
-      "@storages":path.resolve("./src/store/")
+      "@storages":path.resolve("./src/store/"),
+      "@assets":path.resolve("./src/assets/"),
     },
     extensions: [".tsx", ".ts", ".js",".scss",".css"],
   },

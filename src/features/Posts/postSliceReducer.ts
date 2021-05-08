@@ -7,7 +7,7 @@ import {
     PayloadAction,
     createReducer
 } from "@reduxjs/toolkit";
-import {getPostsAsync} from "@services/PostServiceC";
+import {addPostAsync, getPostsAsync} from "@services/PostServiceC";
 import {RootState} from "@storages/index";
 type Post = IPost;
 
@@ -38,6 +38,19 @@ export const fetchPostsThunkAction = createAsyncThunk("@@Post/getPosts", async (
         return <string>error;
     }
 });
+
+export const addPostAsyncThunk = createAsyncThunk(
+    "@@Post/addPostThunk",
+    async (post: Omit<IPost, "id">) => {
+        try {
+            await addPostAsync(post);
+            console.log("posted value", post);
+            return (await getPostsAsync()).data;
+        } catch (error) {
+            return <string>error;
+        }
+    }
+);
 
 /* selectors */
 export const {
@@ -94,6 +107,16 @@ const postSliceReducer = createSlice({
             })
             .addCase(fetchPostsThunkAction.fulfilled, postAdapter.upsertMany)
             .addCase(fetchPostsThunkAction.rejected, (state, action) => {
+                state.error = action.payload as string;
+            })
+            .addCase(addPostAsyncThunk.pending, (state, action) => {
+                state.status = "loading";
+            })
+            .addCase(addPostAsyncThunk.fulfilled, (state, action) => {
+                postAdapter.upsertMany(state, action.payload);
+                state.status = "idle";
+            })
+            .addCase(addPostAsyncThunk.rejected, (state, action) => {
                 state.error = action.payload as string;
             });
     }

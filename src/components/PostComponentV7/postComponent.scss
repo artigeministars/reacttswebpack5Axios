@@ -1,3 +1,10 @@
+.post-container {
+  display: block;
+  margin:1em;
+  padding: 1em;
+  justify-content: center;
+}
+
 .post-list {
   display: block;
   list-style-type: none;
@@ -11,7 +18,7 @@
     list-style-type: none;
       margin: 0;
       padding: 0;
-    background-color: cadetblue;
+    background-color: rgb(77, 211, 65);
     }
   
   .post-list-sub-item {
@@ -22,5 +29,23 @@
   
   .post-list-item {
   display: inline-block;
-  background-color: darkcyan;
+  background-color: rgb(82, 61, 196);
+  }
+
+  .comments-container {
+    display: block;
+  margin:1em;
+  padding: 1em;
+  justify-content: center;
+  background-color: chocolate;
+  }
+
+  .breakpoint {
+    background-color: darkcyan;
+    margin-bottom:2em;
+    padding-bottom: 2em;
+  }
+
+  .crud-icons {
+    padding: 1em;
   }

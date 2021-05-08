@@ -7,7 +7,7 @@ import {
     createSlice,
     PayloadAction
 } from "@reduxjs/toolkit";
-import {getCommentsAsync} from "@services/CommentServiceC";
+import {addCommentAsync, getCommentsAsync} from "@services/CommentServiceC";
 import {RootState} from "@storages/index";
 
 type Comment = IComment;
@@ -33,6 +33,19 @@ export const fetchCommentAsyncThunk = createAsyncThunk(
     }
 );
 
+export const addCommentAsyncThunk = createAsyncThunk(
+    "@@Comment/addComment",
+    async (comment: Omit<IComment, "id">) => {
+        try {
+            if ((await addCommentAsync(comment)).status === 200) {
+                fetchCommentAsyncThunk(comment.postId);
+            }
+        } catch (error) {
+            return error;
+        }
+    }
+);
+
 export const {
     selectAll: selectAllComments,
     selectById: selectCommentById
@@ -46,7 +59,9 @@ const commentSliceReducer = createSlice({
     name: "comments",
     initialState: initialComment,
     reducers: {
-        postDeleteAction: commentAdapter.removeOne
+        commentDeleteAction: commentAdapter.removeOne,
+        commentAddAction: commentAdapter.addOne,
+        commentUpdateAction: commentAdapter.updateOne
     },
     extraReducers: (builder) => {
         builder
@@ -59,8 +74,24 @@ const commentSliceReducer = createSlice({
             })
             .addCase(fetchCommentAsyncThunk.rejected, (state, action) => {
                 state.error = action.payload as string;
+            })
+            .addCase(addCommentAsyncThunk.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(addCommentAsyncThunk.fulfilled, (state, action) => {
+                commentAdapter.addOne(state, action.payload);
+                state.status = "idle";
+            })
+            .addCase(addCommentAsyncThunk.rejected, (state, action) => {
+                state.error = action.payload as string;
             });
     }
 });
+
+export const {
+    commentDeleteAction,
+    commentAddAction,
+    commentUpdateAction
+} = commentSliceReducer.actions;
 
 export default commentSliceReducer.reducer;

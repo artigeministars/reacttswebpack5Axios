@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM, {render} from "react-dom";
 import {Provider} from "react-redux";
-import "./index.css";
+import "./index.scss";
 import App from "./App";
 import {fetchPostsThunkAction} from "@features/Posts/postSliceReducer";
 import {store} from "./store";

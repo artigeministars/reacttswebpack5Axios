@@ -12,7 +12,11 @@ const PostC7: React.FC = () => {
     const renderedListItems = todoIds.map((todoId) => {
         return <PostItem key={todoId.id} id={todoId.id} />;
     });
-    return <ul className="post-list">{renderedListItems}</ul>;
+    return (
+        <div className="post-container">
+            <ul className="post-list">{renderedListItems}</ul>
+        </div>
+    );
 };
 
 export default PostC7;

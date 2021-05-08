@@ -13,6 +13,7 @@ import {fetchCommentAsyncThunk, selectAllComments} from "@features/comments/comm
 import IComment from "@domain/models/Comment";
 import CommentItem from "./CommentItem";
 import "./postComponent.scss";
+import {NewPost} from "./NewPost";
 
 export type Props = {id: number};
 // scss and crud transactions
@@ -20,11 +21,11 @@ const PostItem: React.FC<Props> = ({id}) => {
     const dispatch: AppDispatch = useAppDispatch();
 
     const Post = useAppSelector((state: RootState) => selectPostById(state, id));
-    const statu = useAppSelector((state: RootState) => statuOfPosts(state));
-    const [status, setStatus] = useState(statu);
+    // const statu = useAppSelector((state: RootState) => statuOfPosts(state));
+    // const [status, setStatus] = useState(statu);
     const comments = useAppSelector(selectAllComments);
-    console.log("comments here:");
-    console.log(comments);
+    // console.log("comments here:");
+    // console.log(comments);
 
     const filteredCommentsFunc = (comments: IComment[], postId: number) =>
         comments.filter((comment) => comment.postId === postId);
@@ -61,11 +62,16 @@ const PostItem: React.FC<Props> = ({id}) => {
     } else {
         return (
             <li id="id" className="post-list-item">
+                <div>Post: </div>
                 <div className="post-list-sub-item">{Post.title}</div>
                 <div className="post-list-sub-item">{Post.body}</div>
-                <div>statu: {status}</div>
-
-                {commentLists !== undefined && <ul className="post-sub-list">{commentLists}</ul>}
+                <div>Comments: </div>
+                {commentLists !== undefined && (
+                    <div className="comments-container">
+                        <ul className="post-sub-list">{commentLists}</ul>
+                    </div>
+                )}
+                <NewPost id={Post.userId}></NewPost>
             </li>
         );
     }

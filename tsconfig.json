@@ -13,6 +13,7 @@
         "@routes/*":["src/routes/*"],
         "@features/*":["src/features/*"],
         "@storages/*":["src/store/*"],
+        "@assets/*":["src/assets/*"],
       },
       "lib": ["dom", "dom.iterable", "esnext"],
       "outDir": "./build/",

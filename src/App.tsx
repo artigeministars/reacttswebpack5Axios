@@ -9,7 +9,7 @@ import logo from "./logo.svg";
 import PostComponentV7 from "@components/PostComponentV7";
 // import PostComponentC5 from "@components/PostComponentV5";
 
-import "./App.css";
+// import "./App.css";
 import "./App.scss";
 
 function App() {
