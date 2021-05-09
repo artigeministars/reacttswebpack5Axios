@@ -12,20 +12,25 @@ import update from "@assets/icons/15861719021556282334-20.png";
 import "./postComponent.scss";
 import IComment from "@domain/models/Comment";
 import {NewComment} from "./NewComment";
+import {useAppDispatch} from "@hooks/useAppDispatch";
 
 type props = {id: number};
 
 const CommentItem: React.FC<props> = ({id}) => {
+    const dispatch = useAppDispatch();
     const comment = useAppSelector((state: RootState) => selectCommentById(state, id));
     const deleteComment = useCallback((id: number) => {
         commentDeleteAction(id);
     }, []);
 
-    const deleteCommentC = (id: number) => commentDeleteAction(id);
+    const deleteCommentC = (id: number) => dispatch(commentDeleteAction(id));
 
-    const updateComment = useCallback((comment: IComment) => {
-        addCommentAsyncThunk(comment);
-    }, []);
+    const updateComment = useCallback(
+        (comment: IComment) => {
+            dispatch(addCommentAsyncThunk(comment));
+        },
+        [dispatch]
+    );
 
     /*
     const addComment = useCallback((comment: IComment) => {
