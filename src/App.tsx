@@ -11,12 +11,15 @@ import PostComponentV7 from "@components/PostComponentV7";
 
 // import "./App.css";
 import "./App.scss";
+// import RouteEx from "@routes/Example";
+import RouterExampleLoadable from "@routes/RouteExampleLoadable";
 
 function App() {
     console.log(process.env.MAINTAINER);
     return (
         <div className="App">
             <header className="App-header">
+                <RouterExampleLoadable />
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.

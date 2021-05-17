@@ -73,3 +73,9 @@ npm install @reduxjs/toolkit
 npm install --save redux-logger @types/redux-logger
 // for module.hot HMR 
 npm install @types/webpack-env 
+
+npm install -S react-router-dom @types/react-router-dom
+
+// add ["@babel/plugin-syntax-dynamic-import"] to .babelrc plugin part
+npm install @loadable/component 
+npm i --save-dev @types/loadable__component`
