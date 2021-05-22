@@ -54,7 +54,7 @@ npm install axios --save
 
 npm react-router-dom @types/react-router-dom --save
 
-npm i --save-dev @types/webpack-bundle-analyzer`
+npm i --save-dev @types/webpack-bundle-analyzer
 
 # npm install --save-dev tsconfig-paths-webpack-plugin
 
@@ -79,3 +79,7 @@ npm install -S react-router-dom @types/react-router-dom
 // add ["@babel/plugin-syntax-dynamic-import"] to .babelrc plugin part
 npm install @loadable/component 
 npm i --save-dev @types/loadable__component`
+
+// material-ui with ts
+
+npm install @material-ui/core @material-ui/icons @types/material-ui

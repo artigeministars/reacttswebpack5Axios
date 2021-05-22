@@ -13,6 +13,7 @@ import PostComponentV7 from "@components/PostComponentV7";
 import "./App.scss";
 // import RouteEx from "@routes/Example";
 import RouterExampleLoadable from "@routes/RouteExampleLoadable";
+import ContainedButtons from "@components/Button";
 
 function App() {
     console.log(process.env.MAINTAINER);
@@ -33,6 +34,7 @@ function App() {
                     Learn React
                 </a>
             </header>
+            <ContainedButtons />
             <PostComponentV7></PostComponentV7>
         </div>
     );
