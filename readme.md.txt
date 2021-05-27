@@ -52,7 +52,7 @@ npm install redux @types/redux redux-react @types/redux-react --save
 
 npm install axios --save
 
-npm react-router-dom @types/react-router-dom --save
+# npm react-router-dom @types/react-router-dom --save
 
 npm i --save-dev @types/webpack-bundle-analyzer
 
