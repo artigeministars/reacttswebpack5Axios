@@ -3,10 +3,7 @@ import ReactDOM, {render} from "react-dom";
 import {Provider} from "react-redux";
 import "./index.scss";
 import App from "./App";
-import {fetchPostsThunkAction} from "@features/Posts/postSliceReducer";
-import {store} from "./store";
 
-store.dispatch(fetchPostsThunkAction());
 /*
 ReactDOM.render(
     <React.StrictMode>
@@ -20,9 +17,9 @@ ReactDOM.render(
 
 const renderApp = () =>
     render(
-        <Provider store={store}>
-            <App />
-        </Provider>,
+        //   <Provider store={store}>
+        <App />,
+        //   </Provider>,
         document.getElementById("root")
     );
 
